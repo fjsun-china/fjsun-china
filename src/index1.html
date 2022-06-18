@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test"></div>
+    <!-- <button onClick=dianji()>按钮1</button> -->
+    <!--react核心库-->
+    <script type="text/javascript" src="./js/react.development.js"></script>
+    <!--引入react-dom,用于支持react操作dom-->
+    <script type="text/javascript" src="./js/react-dom.development.js"></script>
+    <!--引入babel用于将jsx转换js-->
+    <script type="text/javascript" src="./js/babel.min.js"></script>
+    <!-- 引入prop-types，用于对组件标签属性进行限制 -->
+	<script type="text/javascript" src="./js/prop-types.js"></script>
+    <!--jsx创建虚拟dom-->
+    <script type="text/babel">
+    
+    class A extends React.Component{
+        constructor(props){
+            console.log('A',"constructor")
+            super(props);
+            this.state = {carName:'奔驰'}
+        }
+        componentWillMount(){
+            console.log('A',"componentWillMount")
+        }
+        componentDidMount(){
+            console.log('A',"componentDidMount")
+        }
+        componentWillUnmount(){
+            console.log('A',"componentWillUnmount")
+        }
+        changeCarName = ()=>{
+            this.setState({carName:'奥迪'})
+        }
+        shouldComponentUpdate(){
+            console.log('A',"shouldComponentUpdate");
+            return true;
+        }
+        componentWillUpdate(){
+            console.log('A',"componentWillUpdate");
+        }
+        componentDidUpdate(){
+            console.log('A',"componentDidUpdate");
+        }
+        render(){
+            console.log('A',"render")
+            return (
+                <div>
+                    <h2>我是A组件</h2>
+                    <button onClick={this.changeCarName}>改变值</button>
+                    <h2>我是{this.state.carName}</h2>
+                    <B carName={this.state.carName}/>
+                    
+                </div>
+            )
+        }
+    }
+
+    class B extends React.Component{
+        constructor(props){
+            super(props);            
+        }
+        componentWillReceiveProps(){
+            console.log('B',"componentWillReceiveProps");
+        }
+        shouldComponentUpdate(){
+            console.log('B',"shouldComponentUpdate");
+            return true;
+        }
+        componentWillUpdate(){
+            console.log('B',"componentWillUpdate");
+        }
+        componentDidUpdate(){
+            console.log('B',"componentDidUpdate");
+        }
+        render(){
+            console.log('B',"render");
+            return (<h2>改变后的值:{this.props.carName}</h2>)
+        }
+    }
+    ReactDOM.render(<A/>,document.getElementById('test'));
+    </script>
+</body>
+
+</html>

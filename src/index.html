@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test"></div>
+    <!-- <button onClick=dianji()>按钮1</button> -->
+    <!--react核心库-->
+    <script type="text/javascript" src="./js/react.development.js"></script>
+    <!--引入react-dom,用于支持react操作dom-->
+    <script type="text/javascript" src="./js/react-dom.development.js"></script>
+    <!--引入babel用于将jsx转换js-->
+    <script type="text/javascript" src="./js/babel.min.js"></script>
+    <!-- 引入prop-types，用于对组件标签属性进行限制 -->
+	<script type="text/javascript" src="./js/prop-types.js"></script>
+    <!--jsx创建虚拟dom-->
+    <script type="text/babel">
+        // const data = ['angualr','vue','React']
+        // const VDom = 
+        //     <div>
+        //         <h1>前端js框架列表</h1>
+        //         <ul>
+        //             {
+        //                 data.map((item,index)=>{
+        //                     return <li key={index}>{item}</li>
+        //                 })
+        //             }
+        //         </ul>
+        //     </div>;
+        //函数组件
+        function Demo(){
+            return <h1>test</h1>;
+            
+        }
+        //类组件
+        // class Person {
+        //     constructor(name,age) {
+        //         this.name = name;
+        //         this.age = age;
+        //     }
+        //     speak(){
+        //         console.log('年龄'+this.age + ',姓名'+ this.name);
+        //     }
+
+        // }
+        // class Student extends Person{
+        //     constructor(name,age,cla){
+        //         super(name,age)
+        //         this.cla = cla;
+        //     }
+        //     speak(){
+        //         console.log('年龄'+this.age + ',姓名'+ this.name+',班级'+this.cla);
+        //     }
+
+        // }
+        // const student1 = new Student('小红',24);
+        // console.log(student1);
+        // student1.speak()
+        // class Student extends React.Component{
+        //     constructor(name,age,cla){
+        //         super(name,age)
+        //         this.cla = cla;
+        //     }
+        //     render(){
+        //         return <button onClick={dianji}>按钮</button>
+        //     }
+        //     speak(){
+        //         console.log('年龄'+this.age + ',姓名'+ this.name+'班级'+this.cla);
+        //     }
+
+        // }
+        // ReactDOM.render(<Student/>,document.getElementById('test'));
+        // function dianji() {
+        //     console.log('test')
+        // }
+        // class Person extends React.Component{
+        //      给实例对象上的state赋值
+        //     state = {ishot:true,wind:true};
+        //     render(){
+        //         const {ishot,wind} = this.state;
+        //         //this.weather是函数,this.weather()才是调用
+        //         return <h1 onClick= {this.weather}>今天的天气：{ishot ? '炎热':'凉爽'},{wind ? '小风':'大风'}</h1>
+        //     };
+
+        //     weather = () => {
+        //         const {ishot,wind} = this.state;
+        //         this.setState({ishot:!ishot,wind:!wind});
+        //     }
+        // }
+        class Person extends React.Component{
+            myRef = React.createRef();
+            myRef2 = React.createRef();
+            showData = ()=>{
+                const input1 = this.myRef.current;
+                console.log(input1.value);
+                
+            }
+            showData2 = (event)=>{
+                // const input2 = this.myRef2.current;
+                console.log(event.target.value);
+            }
+            static propTypes = {
+            name:PropTypes.string.isRequired,
+            age:PropTypes.number,
+            address:PropTypes.string,
+            speak:PropTypes.func,
+        };
+            static defaultProps = {
+            age:'5',
+            address:'6'
+        };
+            // render(){
+            //     console.log(this)
+            //     const {name,age,address} = this.props;
+            //     return (
+            //         <ul> 
+            //             <li>{name}</li>
+            //             <li>{age}</li>
+            //             <li>{address}</li>
+            //         </ul>
+            //     )
+            // }
+            // <input ref="input1"></input>
+            //ref回调函数
+            // <input ref={currentNode => { this.input1 = currentNode }}></input>
+            //             <button onClick={this.showData}>打印数据</button>
+            //             <input onBlur={this.showData2} ref={currentNode => {this.input2 = currentNode}} placeholder="失去焦点打印数据"></input>
+                // <div>
+                //         <input ref={this.myRef}></input>
+                //         <button onClick={this.showData}>打印数据</button>
+                //         <input onBlur={this.showData2} ref={this.myRef2} placeholder="失去焦点打印数据"></input>
+                //     </div>
+            // render() {
+            //     console.log(this)
+			// 	return (
+            //         <div>
+            //             <input ref={this.myRef}></input>
+            //             <button onClick={this.showData}>打印数据</button>
+            //             <input onBlur={this.showData2} placeholder="失去焦点打印数据"></input>
+            //         </div>
+			// 	)
+			// }
+            //组件挂载到页面上时调用
+            state = {opacity:1};
+            componentWillMount(){
+                console.log("componentWillMount")
+            }
+            componentDidMount(){
+                console.log("componentDidMount")
+                this.timer = setInterval(()=>{
+                    let opacity = this.state.opacity;
+                    opacity-=0.1;
+                    if(opacity<=0){
+                        opacity = 1;
+                    }
+                    this.setState({opacity});
+                },200)
+            };
+            componentWillUnmount(){
+                console.log("componentWillUnmount")
+                clearInterval(this.timer);
+            }
+            death=()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById('test'));
+            }
+            render(){
+                console.log('render')
+                return (
+                    <div>
+                        <h1 style={{opacity:this.state.opacity}}>挂载组件</h1>    
+                        <button onClick={this.death}>卸载组件</button>
+                    </div>
+                )
+            }
+        }
+        function speak() {
+            return null;
+        }
+        Person.propTypes = {
+            name:PropTypes.string.isRequired,
+            age:PropTypes.number,
+            address:PropTypes.string,
+            speak:PropTypes.func,
+        };
+        Person.defaultProps = {
+            age:'5',
+            address:'6'
+        };
+        const person1 = {name:'1',age:2,address:'2',speak}
+
+        
+        // ReactDOM.render(<Person {...person1}/>,document.getElementById('test'));
+        ReactDOM.render(<Person {...person1}/>,document.getElementById('test'));
+        
+    </script>
+    <!--js创建虚拟dom-->
+    <!-- <script type="text/javascript">
+        const VDOM = React.createElement('h1',{id:'title'},'hello world')
+        ReactDOM.render(VDOM,document.getElementById('test'));
+    </script> -->
+</body>
+
+</html>
